@@ -6,7 +6,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".activities.MainActivity">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/container"
@@ -48,7 +48,7 @@
                 app:layout_constraintGuide_percent=".66" />
 
             <Button
-                android:id="@+id/button0"
+                android:id="@+id/buttonOne"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="2dp"
@@ -58,7 +58,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/buttonTwo"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="2dp"
@@ -68,7 +68,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/buttonThree"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="2dp"
@@ -78,7 +78,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/buttonFour"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="2dp"
@@ -88,7 +88,7 @@
                 app:layout_constraintTop_toTopOf="@+id/guideline_horizontal1" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/buttonFive"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="2dp"
@@ -98,7 +98,7 @@
                 app:layout_constraintTop_toTopOf="@+id/guideline_horizontal1" />
 
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/buttonSix"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="2dp"
@@ -109,7 +109,7 @@
 
 
             <Button
-                android:id="@+id/button6"
+                android:id="@+id/buttonSeven"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="2dp"
@@ -119,7 +119,7 @@
                 app:layout_constraintTop_toTopOf="@+id/guideline_horizontal2" />
 
             <Button
-                android:id="@+id/button7"
+                android:id="@+id/buttonEight"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="2dp"
@@ -129,7 +129,7 @@
                 app:layout_constraintTop_toTopOf="@+id/guideline_horizontal2" />
 
             <Button
-                android:id="@+id/button8"
+                android:id="@+id/buttonNine"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="2dp"
@@ -141,8 +141,10 @@
         </android.support.constraint.ConstraintLayout>
 
         <Button
+            android:id="@+id/buttonRestart"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:text="@string/restart_game"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="w,3:1"
             app:layout_constraintEnd_toEndOf="parent"

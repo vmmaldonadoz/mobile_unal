@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/new_game"
+        android:icon="@drawable/ic_new"
+        android:title="@string/new_game" />
+    <item
+        android:id="@+id/ai_difficulty"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/ai_difficulty" />
+    <item
+        android:id="@+id/quit"
+        android:icon="@drawable/ic_exit"
+        android:title="@string/quit" />
+</menu>

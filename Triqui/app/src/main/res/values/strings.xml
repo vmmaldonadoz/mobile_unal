@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">Triqui</string>
     <string name="restart_game">Restart game</string>
+    <string name="new_game">New game</string>
+    <string name="ai_difficulty">Difficulty</string>
+    <string name="quit">Quit</string>
+    <string name="difficulty_choose">Choose the difficulty</string>
+    <string name="difficulty_easy">Easy</string>
+    <string name="difficulty_harder">Harder</string>
+    <string name="difficulty_expert">Expert</string>
+    <string name="quit_question">Do you want to quit?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
 </resources>

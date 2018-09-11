@@ -9,12 +9,20 @@ class TicTacToeGame {
 
     private val mRand: Random = Random()
 
+    enum class DificultyLevel { Easy, Harder, Expert }
+
+    private var dificultyLevel = DificultyLevel.Expert
+
     init {
         initBoard()
     }
 
     private fun initBoard() {
         mBoard = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9')
+    }
+
+    fun setDifficulty(difficulty: DificultyLevel) {
+        dificultyLevel = difficulty
     }
 
     // Check for a winner.  Return
@@ -78,22 +86,29 @@ class TicTacToeGame {
     }
 
     fun getComputerMove(): Int {
-        var move: Int
+        var move: Int = -1
 
-        // First see if there's a move O can make to win
-        for (i in 0 until BOARD_SIZE) {
-            if (mBoard[i] != HUMAN_PLAYER && mBoard[i] != COMPUTER_PLAYER) {
-                val curr = mBoard[i]
-                mBoard[i] = COMPUTER_PLAYER
-                if (checkForWinner() == 3) {
-                    println("Computer is moving to " + (i + 1))
-                    return i
-                } else {
-                    mBoard[i] = curr
-                }
-            }
+        move = when (dificultyLevel) {
+            DificultyLevel.Expert -> moveLikeAnExpert()
+            DificultyLevel.Harder -> getWinningMove()
+            DificultyLevel.Easy -> getRandomMove()
         }
 
+        if (move == -1) {
+            move = getRandomMove()
+        }
+        return move
+    }
+
+    private fun moveLikeAnExpert(): Int {
+        var move = getWinningMove()
+        if (move == -1) {
+            move = getBlockingMove()
+        }
+        return move
+    }
+
+    private fun getBlockingMove(): Int {
         // See if there's a move O can make to block X from winning
         for (i in 0 until BOARD_SIZE) {
             if (mBoard[i] != HUMAN_PLAYER && mBoard[i] != COMPUTER_PLAYER) {
@@ -108,16 +123,32 @@ class TicTacToeGame {
                 }
             }
         }
+        return -1
+    }
 
-        // Generate random move
+    private fun getWinningMove(): Int {
+        // First see if there's a move O can make to win
+        for (i in 0 until BOARD_SIZE) {
+            if (mBoard[i] != HUMAN_PLAYER && mBoard[i] != COMPUTER_PLAYER) {
+                val curr = mBoard[i]
+                mBoard[i] = COMPUTER_PLAYER
+                if (checkForWinner() == 3) {
+                    println("Computer is moving to " + (i + 1))
+                    return i
+                } else {
+                    mBoard[i] = curr
+                }
+            }
+        }
+        return -1
+    }
+
+    private fun getRandomMove(): Int {
+        var move1: Int
         do {
-            move = mRand.nextInt(BOARD_SIZE)
-        } while (mBoard[move] == HUMAN_PLAYER || mBoard[move] == COMPUTER_PLAYER)
-
-        println("Computer is moving to " + (move + 1))
-
-        mBoard[move] = COMPUTER_PLAYER
-        return move
+            move1 = mRand.nextInt(BOARD_SIZE)
+        } while (mBoard[move1] == HUMAN_PLAYER || mBoard[move1] == COMPUTER_PLAYER)
+        return move1
     }
 
     companion object {

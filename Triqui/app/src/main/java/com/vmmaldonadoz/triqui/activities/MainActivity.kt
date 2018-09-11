@@ -1,9 +1,13 @@
 package com.vmmaldonadoz.triqui.activities
 
+import android.content.DialogInterface
 import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
 import com.vmmaldonadoz.triqui.R
@@ -37,6 +41,54 @@ class MainActivity : AppCompatActivity() {
         startNewGame()
 
         binding.buttonRestart.setOnClickListener { startNewGame() }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        when (item?.itemId) {
+            R.id.new_game -> startNewGame()
+            R.id.ai_difficulty -> showDifficultyDialog()
+            R.id.quit -> showQuitDialog()
+        }
+
+        return false
+    }
+
+    private fun showQuitDialog() {
+        val dialog = AlertDialog.Builder(this).apply {
+            setMessage(R.string.quit_question)
+            setCancelable(false)
+            setPositiveButton(R.string.yes) { _, _ ->
+                finish()
+            }
+            setNegativeButton(R.string.no) { _, _ -> }
+        }
+        dialog.create().show()
+    }
+
+    private fun showDifficultyDialog() {
+        val levels = arrayOf<String>(getString(R.string.difficulty_easy), getString(R.string.difficulty_harder), getString(R.string.difficulty_expert))
+        val dialog = AlertDialog.Builder(this).apply {
+            title = getString(R.string.difficulty_choose)
+            setSingleChoiceItems(levels, 0) { dialogInterface, selected ->
+                when (selected) {
+                    0 -> game.setDifficulty(TicTacToeGame.DificultyLevel.Easy)
+                    1 -> game.setDifficulty(TicTacToeGame.DificultyLevel.Harder)
+                    2 -> game.setDifficulty(TicTacToeGame.DificultyLevel.Expert)
+                }
+                dialogInterface.dismiss()
+                startNewGame()
+            }
+        }
+        dialog.create().show()
     }
 
     private fun startNewGame() {

@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
             button.setOnClickListener { handleClick(button, index) }
         }
 
-        showToast("You go first!")
+        binding.textViewInfo.text = "You go first!"
     }
 
     private fun showToast(text: String, length: Int = Toast.LENGTH_SHORT) {
@@ -113,14 +113,14 @@ class MainActivity : AppCompatActivity() {
 
             var winner = game.checkForWinner()
             if (winner == 0) {
-                showToast("Machines's turn")
+                binding.textViewInfo.text = "Machines's turn"
                 val move = game.getComputerMove()
                 setMove(TicTacToeGame.COMPUTER_PLAYER, move)
                 winner = game.checkForWinner()
             }
 
             when (winner) {
-                0 -> showToast("It's your turn")
+                0 -> binding.textViewInfo.text = "It's your turn"
                 1 -> showToast("It's a tie")
                 2 -> showToast("You won!")
                 else -> showToast("Machine won!")

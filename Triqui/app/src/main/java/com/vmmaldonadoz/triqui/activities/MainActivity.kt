@@ -1,17 +1,20 @@
 package com.vmmaldonadoz.triqui.activities
 
-import android.content.DialogInterface
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.graphics.Color
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
-import android.widget.Toast
 import com.vmmaldonadoz.triqui.R
 import com.vmmaldonadoz.triqui.databinding.ActivityMainBinding
+import com.vmmaldonadoz.triqui.model.TicTacToeGame
+import com.vmmaldonadoz.triqui.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,12 +25,72 @@ class MainActivity : AppCompatActivity() {
 
     private val boardButtons = arrayListOf<Button>()
 
-    private val game = TicTacToeGame()
+    private lateinit var viewModel: MainViewModel
+
+    private var mediaPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.root
 
+        bindButtons()
+        initResetListener()
+
+        setupViewModel()
+
+        observeBoard()
+        observeWinner()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mediaPlayer = MediaPlayer.create(applicationContext, R.raw.pop)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mediaPlayer?.release()
+    }
+
+    private fun observeWinner() {
+        viewModel.winner.observe(this, Observer { winner ->
+            val safeWinner = winner ?: 0
+            checkWinner(safeWinner)
+        })
+    }
+
+    private fun observeBoard() {
+        viewModel.board.observe(this, Observer { board ->
+            val safeBoard = board ?: CharArray(9) { ' ' }
+            drawBoard(safeBoard)
+        })
+    }
+
+    private fun drawBoard(safeBoard: CharArray) {
+        safeBoard.forEachIndexed { index, movement -> drawMovement(movement, index) }
+    }
+
+    private fun drawMovement(player: Char, move: Int) {
+        boardButtons[move].let { button ->
+            button.isEnabled = player == ' '
+            button.text = player.toString()
+            if (player == TicTacToeGame.HUMAN_PLAYER) {
+                button.setTextColor(Color.rgb(0, 200, 0))
+            } else {
+                button.setTextColor(Color.rgb(200, 0, 0))
+            }
+        }
+    }
+
+    private fun setupViewModel() {
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+    }
+
+    private fun initResetListener() {
+        binding.buttonRestart.setOnClickListener { startNewGame() }
+    }
+
+    private fun bindButtons() {
         boardButtons.add(binding.buttonOne)
         boardButtons.add(binding.buttonTwo)
         boardButtons.add(binding.buttonThree)
@@ -38,9 +101,11 @@ class MainActivity : AppCompatActivity() {
         boardButtons.add(binding.buttonEight)
         boardButtons.add(binding.buttonNine)
 
-        startNewGame()
-
-        binding.buttonRestart.setOnClickListener { startNewGame() }
+        boardButtons.forEachIndexed { index, button ->
+            button.text = ""
+            button.isEnabled = true
+            button.setOnClickListener { handleClick(button, index) }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -80,9 +145,9 @@ class MainActivity : AppCompatActivity() {
             title = getString(R.string.difficulty_choose)
             setSingleChoiceItems(levels, 0) { dialogInterface, selected ->
                 when (selected) {
-                    0 -> game.setDifficulty(TicTacToeGame.DificultyLevel.Easy)
-                    1 -> game.setDifficulty(TicTacToeGame.DificultyLevel.Harder)
-                    2 -> game.setDifficulty(TicTacToeGame.DificultyLevel.Expert)
+                    0 -> viewModel.setEasyDifficulty()
+                    1 -> viewModel.setHarderDifficulty()
+                    2 -> viewModel.setExpertDifficulty()
                 }
                 dialogInterface.dismiss()
                 startNewGame()
@@ -92,52 +157,43 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startNewGame() {
-        game.clearBoard()
-
-        boardButtons.forEachIndexed { index, button ->
-            button.text = ""
-            button.isEnabled = true
-            button.setOnClickListener { handleClick(button, index) }
-        }
-
-        binding.textViewInfo.text = "You go first!"
+        viewModel.startNewGame()
     }
 
-    private fun showToast(text: String, length: Int = Toast.LENGTH_SHORT) {
-        Toast.makeText(this, text, length).show()
+    private fun showInformation(text: String) {
+        binding.textViewInfo.text = text
     }
 
     private fun handleClick(button: Button, index: Int) {
         if (button.isEnabled) {
-            setMove(TicTacToeGame.HUMAN_PLAYER, index)
-
-            var winner = game.checkForWinner()
-            if (winner == 0) {
-                binding.textViewInfo.text = "Machines's turn"
-                val move = game.getComputerMove()
-                setMove(TicTacToeGame.COMPUTER_PLAYER, move)
-                winner = game.checkForWinner()
-            }
-
-            when (winner) {
-                0 -> binding.textViewInfo.text = "It's your turn"
-                1 -> showToast("It's a tie")
-                2 -> showToast("You won!")
-                else -> showToast("Machine won!")
-            }
+            playHumanClick()
+            setHumanMovement(index)
+            setMachineMovement()
         }
     }
 
-    private fun setMove(player: Char, move: Int) {
-        game.setMove(player, move)
+    private fun playHumanClick() {
+        mediaPlayer?.start()
+    }
 
-        boardButtons[move].let { button ->
-            button.isEnabled = false
-            button.text = player.toString()
-            if (player == TicTacToeGame.HUMAN_PLAYER) {
-                button.setTextColor(Color.rgb(0, 200, 0))
-            } else {
-                button.setTextColor(Color.rgb(200, 0, 0))
+    private fun setHumanMovement(index: Int) {
+        viewModel.setHumanMovement(index)
+    }
+
+    private fun setMachineMovement() {
+        viewModel.setMachineMovement()
+    }
+
+    private fun checkWinner(winner: Int) {
+        when (winner) {
+            0 -> showInformation(resources.getString(R.string.its_your_turn))
+            1 -> showInformation(resources.getString(R.string.its_a_tie))
+            2 -> showInformation(resources.getString(R.string.you_won))
+            else -> showInformation(resources.getString(R.string.machine_won))
+        }
+        if (winner > 0) {
+            boardButtons.forEach { button ->
+                button.isEnabled = false
             }
         }
     }

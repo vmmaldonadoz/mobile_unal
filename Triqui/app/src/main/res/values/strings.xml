@@ -12,4 +12,12 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
+    <string name="its_your_turn">It\'s your turn</string>
+    <string name="its_a_tie">It\'s a tie</string>
+    <string name="you_won">You won!</string>
+    <string name="machine_won">Machine won!</string>
+
+    <string name="orientation_portrait">Orientation: Portrait</string>
+    <string name="orientation_landscape">Orientation: Landscape</string>
+
 </resources>

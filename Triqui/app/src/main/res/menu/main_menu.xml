@@ -9,6 +9,10 @@
         android:icon="@drawable/ic_settings"
         android:title="@string/ai_difficulty" />
     <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings" />
+    <item
         android:id="@+id/quit"
         android:icon="@drawable/ic_exit"
         android:title="@string/quit" />

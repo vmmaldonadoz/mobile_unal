@@ -19,5 +19,7 @@
 
     <string name="orientation_portrait">Orientation: Portrait</string>
     <string name="orientation_landscape">Orientation: Landscape</string>
+    <string name="result_human_wins">Human wins!</string>
+    <string name="settings">Settings</string>
 
 </resources>

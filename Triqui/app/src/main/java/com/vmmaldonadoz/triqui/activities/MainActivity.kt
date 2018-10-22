@@ -1,11 +1,14 @@
 package com.vmmaldonadoz.triqui.activities
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
@@ -120,11 +123,17 @@ class MainActivity : AppCompatActivity() {
 
         when (item?.itemId) {
             R.id.new_game -> startNewGame()
+            R.id.settings -> openSettings()
             R.id.ai_difficulty -> showDifficultyDialog()
             R.id.quit -> showQuitDialog()
         }
 
         return false
+    }
+
+    private fun openSettings(): Boolean {
+        startActivityForResult(Intent(this, PreferencesActivity::class.java), 0)
+        return true
     }
 
     private fun showQuitDialog() {
@@ -173,7 +182,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun playHumanClick() {
-        mediaPlayer?.start()
+        if (soundOn) {
+            mediaPlayer?.start()
+        }
     }
 
     private fun setHumanMovement(index: Int) {
@@ -188,12 +199,35 @@ class MainActivity : AppCompatActivity() {
         when (winner) {
             0 -> showInformation(resources.getString(R.string.its_your_turn))
             1 -> showInformation(resources.getString(R.string.its_a_tie))
-            2 -> showInformation(resources.getString(R.string.you_won))
+            2 -> showInformation(getHumanWinsMessage())
             else -> showInformation(resources.getString(R.string.machine_won))
         }
         if (winner > 0) {
             boardButtons.forEach { button ->
                 button.isEnabled = false
+            }
+        }
+    }
+
+    private fun getHumanWinsMessage(): String {
+        val defaultMessage = resources.getString(R.string.you_won)
+        return PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getString("victory_message", defaultMessage).orEmpty()
+    }
+
+    private var soundOn: Boolean = true
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == Activity.RESULT_CANCELED) {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+            soundOn = preferences.getBoolean("sound", true)
+
+            val difficultyLevel = preferences.getString("difficulty_level", getString(R.string.difficulty_expert))
+            when (difficultyLevel) {
+                getString(R.string.difficulty_expert) -> viewModel.setExpertDifficulty()
+                getString(R.string.difficulty_harder) -> viewModel.setHarderDifficulty()
+                getString(R.string.difficulty_easy) -> viewModel.setEasyDifficulty()
             }
         }
     }

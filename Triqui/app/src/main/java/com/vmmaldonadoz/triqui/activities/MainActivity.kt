@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
 
+    private var soundOn: Boolean = true
+
     private var mediaPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -215,8 +217,6 @@ class MainActivity : AppCompatActivity() {
                 .getDefaultSharedPreferences(this)
                 .getString("victory_message", defaultMessage).orEmpty()
     }
-
-    private var soundOn: Boolean = true
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == Activity.RESULT_CANCELED) {

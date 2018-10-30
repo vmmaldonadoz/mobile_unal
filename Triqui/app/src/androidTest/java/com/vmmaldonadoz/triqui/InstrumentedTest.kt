@@ -59,11 +59,11 @@ class InstrumentedTest {
             perform(click())
 
             check(matches(isNotEnabled()))
-            check(matches(containsText("${TicTacToeGame.HUMAN_PLAYER}")))
+            check(matches(containsText("${TicTacToeGame.PLAYER_1}")))
         }
 
         // Validate machine movement
-        onView(withText("${TicTacToeGame.COMPUTER_PLAYER}"))
+        onView(withText("${TicTacToeGame.PLAYER_2}"))
                 .check(matches(isNotEnabled()))
     }
 
@@ -75,7 +75,7 @@ class InstrumentedTest {
 
             // Validate player movement.
             check(matches(isNotEnabled()))
-            check(matches(containsText("${TicTacToeGame.HUMAN_PLAYER}")))
+            check(matches(containsText("${TicTacToeGame.PLAYER_1}")))
         }
 
         // Restart game.
@@ -128,7 +128,7 @@ class InstrumentedTest {
         onView(withId(playerMovement))
                 .apply {
                     check(matches(isNotEnabled()))
-                    check(matches(containsText("${TicTacToeGame.HUMAN_PLAYER}")))
+                    check(matches(containsText("${TicTacToeGame.PLAYER_1}")))
                 }
 
     }

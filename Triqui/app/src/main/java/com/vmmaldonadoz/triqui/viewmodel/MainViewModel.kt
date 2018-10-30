@@ -7,6 +7,9 @@ import com.vmmaldonadoz.triqui.model.TicTacToeGame
 
 class MainViewModel : ViewModel() {
 
+    private var playingOnline = false
+    private var gameId = ""
+
     private val game by lazy { TicTacToeGame() }
 
     val winner: MutableLiveData<Int> = MutableLiveData()
@@ -16,6 +19,10 @@ class MainViewModel : ViewModel() {
     init {
         updateBoard()
         updateWinner()
+    }
+
+    fun isPlayingOnline(): Boolean {
+        return playingOnline
     }
 
     fun setEasyDifficulty() {
@@ -38,7 +45,7 @@ class MainViewModel : ViewModel() {
 
     fun setMachineMovement() {
         if (game.checkForWinner() == 0) {
-            setMovement(TicTacToeGame.COMPUTER_PLAYER, game.getComputerMove())
+            setMovement(TicTacToeGame.PLAYER_2, game.getComputerMove())
         }
     }
 
@@ -51,12 +58,20 @@ class MainViewModel : ViewModel() {
     }
 
     fun setHumanMovement(index: Int) {
-        setMovement(TicTacToeGame.HUMAN_PLAYER, index)
+        setMovement(TicTacToeGame.PLAYER_1, index)
     }
 
     private fun setMovement(turn: Char, index: Int) {
         game.setMove(turn, index)
         updateBoard()
         updateWinner()
+    }
+
+    fun setPlayingOnline(playingOnline: Boolean) {
+        this.playingOnline = playingOnline
+    }
+
+    fun setGame(gameId: String) {
+        this.gameId = gameId
     }
 }

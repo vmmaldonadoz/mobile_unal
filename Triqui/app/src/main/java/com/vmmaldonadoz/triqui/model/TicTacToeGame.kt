@@ -19,6 +19,10 @@ class TicTacToeGame {
         board = CharArray(9) { ' ' }
     }
 
+    fun loadSavedGame(savedGame : CharArray){
+        board = savedGame
+    }
+
     fun setDifficulty(difficulty: DifficultyLevel) {
         difficultyLevel = difficulty
     }
@@ -26,21 +30,21 @@ class TicTacToeGame {
     // Check for a winner.  Return
     //  0 if no winner or tie yet
     //  1 if it's a tie
-    //  2 if X won
-    //  3 if O won
+    //  2 if X won (Player 1)
+    //  3 if O won (Player 2)
     fun checkForWinner(): Int {
 
         // Check horizontal wins
         kotlin.run {
             var index = 0
             while (index <= 6) {
-                if (board[index] == HUMAN_PLAYER &&
-                        board[index + 1] == HUMAN_PLAYER &&
-                        board[index + 2] == HUMAN_PLAYER)
+                if (board[index] == PLAYER_1 &&
+                        board[index + 1] == PLAYER_1 &&
+                        board[index + 2] == PLAYER_1)
                     return 2
-                if (board[index] == COMPUTER_PLAYER &&
-                        board[index + 1] == COMPUTER_PLAYER &&
-                        board[index + 2] == COMPUTER_PLAYER)
+                if (board[index] == PLAYER_2 &&
+                        board[index + 1] == PLAYER_2 &&
+                        board[index + 2] == PLAYER_2)
                     return 3
                 index += 3
             }
@@ -48,34 +52,34 @@ class TicTacToeGame {
 
         // Check vertical wins
         for (i in 0..2) {
-            if (board[i] == HUMAN_PLAYER &&
-                    board[i + 3] == HUMAN_PLAYER &&
-                    board[i + 6] == HUMAN_PLAYER)
+            if (board[i] == PLAYER_1 &&
+                    board[i + 3] == PLAYER_1 &&
+                    board[i + 6] == PLAYER_1)
                 return 2
-            if (board[i] == COMPUTER_PLAYER &&
-                    board[i + 3] == COMPUTER_PLAYER &&
-                    board[i + 6] == COMPUTER_PLAYER)
+            if (board[i] == PLAYER_2 &&
+                    board[i + 3] == PLAYER_2 &&
+                    board[i + 6] == PLAYER_2)
                 return 3
         }
 
         // Check for diagonal wins
-        if (board[0] == HUMAN_PLAYER &&
-                board[4] == HUMAN_PLAYER &&
-                board[8] == HUMAN_PLAYER || board[2] == HUMAN_PLAYER &&
-                board[4] == HUMAN_PLAYER &&
-                board[6] == HUMAN_PLAYER)
+        if (board[0] == PLAYER_1 &&
+                board[4] == PLAYER_1 &&
+                board[8] == PLAYER_1 || board[2] == PLAYER_1 &&
+                board[4] == PLAYER_1 &&
+                board[6] == PLAYER_1)
             return 2
-        if (board[0] == COMPUTER_PLAYER &&
-                board[4] == COMPUTER_PLAYER &&
-                board[8] == COMPUTER_PLAYER || board[2] == COMPUTER_PLAYER &&
-                board[4] == COMPUTER_PLAYER &&
-                board[6] == COMPUTER_PLAYER)
+        if (board[0] == PLAYER_2 &&
+                board[4] == PLAYER_2 &&
+                board[8] == PLAYER_2 || board[2] == PLAYER_2 &&
+                board[4] == PLAYER_2 &&
+                board[6] == PLAYER_2)
             return 3
 
         // Check for tie
         for (i in 0 until BOARD_SIZE) {
             // If we find a number, then no one has won yet
-            if (board[i] != HUMAN_PLAYER && board[i] != COMPUTER_PLAYER)
+            if (board[i] != PLAYER_1 && board[i] != PLAYER_2)
                 return 0
         }
 
@@ -109,11 +113,11 @@ class TicTacToeGame {
     private fun getBlockingMove(): Int {
         // See if there's a move O can make to block X from winning
         for (i in 0 until BOARD_SIZE) {
-            if (board[i] != HUMAN_PLAYER && board[i] != COMPUTER_PLAYER) {
+            if (board[i] != PLAYER_1 && board[i] != PLAYER_2) {
                 val curr = board[i]   // Save the current number
-                board[i] = HUMAN_PLAYER
+                board[i] = PLAYER_1
                 if (checkForWinner() == 2) {
-                    board[i] = COMPUTER_PLAYER
+                    board[i] = PLAYER_2
                     println("Computer is moving to " + (i + 1))
                     return i
                 } else {
@@ -127,9 +131,9 @@ class TicTacToeGame {
     private fun getWinningMove(): Int {
         // First see if there's a move O can make to win
         for (i in 0 until BOARD_SIZE) {
-            if (board[i] != HUMAN_PLAYER && board[i] != COMPUTER_PLAYER) {
+            if (board[i] != PLAYER_1 && board[i] != PLAYER_2) {
                 val curr = board[i]
-                board[i] = COMPUTER_PLAYER
+                board[i] = PLAYER_2
                 if (checkForWinner() == 3) {
                     return i
                 } else {
@@ -144,13 +148,13 @@ class TicTacToeGame {
         var randomMove: Int
         do {
             randomMove = mRand.nextInt(BOARD_SIZE)
-        } while (board[randomMove] == HUMAN_PLAYER || board[randomMove] == COMPUTER_PLAYER)
+        } while (board[randomMove] == PLAYER_1 || board[randomMove] == PLAYER_2)
         return randomMove
     }
 
     companion object {
-        const val HUMAN_PLAYER = 'X'
-        const val COMPUTER_PLAYER = 'O'
+        const val PLAYER_1 = 'X'
+        const val PLAYER_2 = 'O'
     }
 
     fun clearBoard() {

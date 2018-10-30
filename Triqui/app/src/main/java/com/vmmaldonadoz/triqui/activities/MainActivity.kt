@@ -15,6 +15,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import com.vmmaldonadoz.triqui.R
+import com.vmmaldonadoz.triqui.constants.GAME_ID
 import com.vmmaldonadoz.triqui.databinding.ActivityMainBinding
 import com.vmmaldonadoz.triqui.model.TicTacToeGame
 import com.vmmaldonadoz.triqui.viewmodel.MainViewModel
@@ -38,13 +39,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding.root
 
+        setupViewModel()
+        readExtras(intent)
+
         bindButtons()
         initResetListener()
 
-        setupViewModel()
-
         observeBoard()
         observeWinner()
+    }
+
+    private fun readExtras(intent: Intent) {
+        val gameId = intent.getStringExtra(GAME_ID).orEmpty()
+
+        viewModel.apply {
+            setPlayingOnline(gameId.isNotBlank())
+            setGame(gameId)
+        }
     }
 
     override fun onResume() {
@@ -79,7 +90,7 @@ class MainActivity : AppCompatActivity() {
         boardButtons[move].let { button ->
             button.isEnabled = player == ' '
             button.text = player.toString()
-            if (player == TicTacToeGame.HUMAN_PLAYER) {
+            if (player == TicTacToeGame.PLAYER_1) {
                 button.setTextColor(Color.rgb(0, 200, 0))
             } else {
                 button.setTextColor(Color.rgb(200, 0, 0))
@@ -116,18 +127,25 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
 
-        val inflater = menuInflater
-        inflater.inflate(R.menu.main_menu, menu)
-        return true
+        val playingOffline = !viewModel.isPlayingOnline()
+        if (playingOffline) {
+            val inflater = menuInflater
+            inflater.inflate(R.menu.main_menu, menu)
+        }
+
+        return playingOffline
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (!viewModel.isPlayingOnline()) {
 
-        when (item?.itemId) {
-            R.id.new_game -> startNewGame()
-            R.id.settings -> openSettings()
-            R.id.ai_difficulty -> showDifficultyDialog()
-            R.id.quit -> showQuitDialog()
+            when (item?.itemId) {
+                R.id.new_game -> startNewGame()
+                R.id.settings -> openSettings()
+                R.id.ai_difficulty -> showDifficultyDialog()
+                R.id.quit -> showQuitDialog()
+            }
+
         }
 
         return false
@@ -177,13 +195,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleClick(button: Button, index: Int) {
         if (button.isEnabled) {
-            playHumanClick()
+            playClickSound()
             setHumanMovement(index)
             setMachineMovement()
         }
     }
 
-    private fun playHumanClick() {
+    private fun playClickSound() {
         if (soundOn) {
             mediaPlayer?.start()
         }

@@ -44,8 +44,16 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
+
 dependencies {
     def lifecycle_version = "1.1.1"
+    def rxAndroidVersion = "2.0.2"
+    def rxJavaVersion = "2.1.3"
+
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -68,6 +76,15 @@ dependencies {
     // Multidex
     implementation 'com.android.support:multidex:1.0.3'
 
+    // RxJava
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+
+    // Epoxy
+    implementation 'com.airbnb.android:epoxy:2.19.0'
+    kapt 'com.airbnb.android:epoxy-processor:2.19.0'
+
+    // Testing
     testImplementation 'junit:junit:4.12'
 
     // Espresso - UI testing

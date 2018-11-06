@@ -22,4 +22,14 @@
     <string name="result_human_wins">Human wins!</string>
     <string name="settings">Settings</string>
 
+    <string name="online_game_in_progress">Game in progress</string>
+    <string name="online_finished_game">Finished game</string>
+    <string name="online_game_created_by">Game started by: %1$s</string>
+    <string name="online_enter_game">Enter</string>
+    <string name="welcome_to_game">Welcome to Tic Tac Toe</string>
+    <string name="welcome_nickname_request">Please, insert your nickname:</string>
+    <string name="welcome_nickname_hint">Nickname</string>
+    <string name="welcome_play_online">Play Online</string>
+    <string name="welcome_play_offline">Play Offline</string>
+
 </resources>

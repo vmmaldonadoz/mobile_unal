@@ -2,6 +2,7 @@ package com.vmmaldonadoz.triqui.mappings
 
 import com.google.firebase.database.DataSnapshot
 import com.vmmaldonadoz.triqui.constants.FINISHED
+import com.vmmaldonadoz.triqui.constants.GAME_TURN
 import com.vmmaldonadoz.triqui.constants.PLAYER_1
 import com.vmmaldonadoz.triqui.constants.PLAYER_2
 import com.vmmaldonadoz.triqui.constants.SAVED_GAME
@@ -15,6 +16,8 @@ fun RemoteGame.toMap(): HashMap<String, Any> {
         this[PLAYER_1] = game.playerOne
         this[PLAYER_2] = game.playerTwo
         this[SAVED_GAME] = game.savedGame
+        this[GAME_TURN] = game.gameTurn
+        this[FINISHED] = game.finished
     }
 }
 
@@ -26,7 +29,8 @@ fun DataSnapshot.toRemoteGame(): RemoteGame {
     val playerOne = tryOrDefault({ map[PLAYER_1] as String }, "")
     val playerTwo = tryOrDefault({ map[PLAYER_2] as String }, "")
     val savedGame = tryOrDefault({ map[SAVED_GAME] as String }, "")
+    val gameTurn = tryOrDefault({ map[GAME_TURN] as String }, "")
     val finished = tryOrDefault({ map[FINISHED] as Boolean }, false)
 
-    return RemoteGame(gameId, playerOne, playerTwo, savedGame, finished)
+    return RemoteGame(gameId, playerOne, playerTwo, savedGame, gameTurn, finished)
 }

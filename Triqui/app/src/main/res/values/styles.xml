@@ -8,4 +8,32 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="BaseText">
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="HeadlineText" parent="BaseText">
+        <item name="android:textSize">@dimen/font_large</item>
+    </style>
+
+    <style name="HeadlineText.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BodyText" parent="BaseText">
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
+    <style name="BodyText.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SmallText" parent="BaseText">
+        <item name="android:textSize">@dimen/font_small</item>
+    </style>
+
+    <style name="SmallText.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

@@ -6,4 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".activities.SplashActivity">
 
+    <ImageView
+        android:id="@+id/imageView_logo"
+        android:layout_width="@dimen/game_height"
+        android:layout_height="@dimen/game_height"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:contentDescription="@null"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toTopOf="@+id/textView_welcome_message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/textView_welcome_message"
+        style="@style/HeadlineText.Bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:gravity="center"
+        android:text="@string/app_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_logo" />
+
+
 </android.support.constraint.ConstraintLayout>

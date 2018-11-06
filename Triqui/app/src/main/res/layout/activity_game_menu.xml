@@ -1,81 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activities.GameMenuActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:layout_width="@dimen/game_height"
-        android:layout_height="@dimen/game_height"
-        android:src="@drawable/ic_launcher_foreground"
-        />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activities.GameMenuActivity">
 
-    <TextView
-        android:id="@+id/textView_welcome_message"
-        style="@style/HeadlineText.Bold"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/welcome_to_game"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/imageView_logo"
+            android:layout_width="@dimen/game_height"
+            android:layout_height="@dimen/game_height"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:contentDescription="@null"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintBottom_toTopOf="@+id/textView_welcome_message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-    <TextView
-        android:id="@+id/textView_nickname_request"
-        style="@style/BodyText.Bold"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/welcome_nickname_request"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_welcome_message" />
+        <TextView
+            android:id="@+id/textView_welcome_message"
+            style="@style/HeadlineText.Bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:gravity="center"
+            android:text="@string/welcome_to_game"
+            app:layout_constraintBottom_toTopOf="@+id/textView_nickname_request"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_logo" />
 
-    <EditText
-        android:id="@+id/editText_nickname"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/spacing_large"
-        android:layout_marginStart="@dimen/spacing_large"
-        android:background="@drawable/box_with_border"
-        android:hint="@string/welcome_nickname_hint"
-        android:inputType="textCapCharacters"
-        android:textColor="@color/gray"
-        android:textColorHint="@color/gray_pale"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_nickname_request" />
+        <TextView
+            android:id="@+id/textView_nickname_request"
+            style="@style/BodyText.Bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:gravity="center"
+            android:text="@string/welcome_nickname_request"
+            app:layout_constraintBottom_toTopOf="@+id/editText_nickname"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_welcome_message" />
 
-    <Button
-        android:id="@+id/button_play_online"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_large"
-        android:background="@color/green"
-        android:text="@string/welcome_play_online"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:layout_constraintDimensionRatio="H,1:4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_nickname" />
+        <EditText
+            android:id="@+id/editText_nickname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_large"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:background="@drawable/box_with_border"
+            android:hint="@string/welcome_nickname_hint"
+            android:inputType="textCapCharacters"
+            android:textColor="@color/gray"
+            android:textColorHint="@color/gray_pale"
+            app:layout_constraintBottom_toTopOf="@+id/button_play_online"
+            app:layout_constraintDimensionRatio="H,1:7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_nickname_request" />
 
-    <Button
-        android:id="@+id/button_play_offline"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_medium"
-        android:background="@color/red"
-        android:text="@string/welcome_play_offline"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:layout_constraintDimensionRatio="H,1:4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="pa"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_play_online" />
+        <Button
+            android:id="@+id/button_play_online"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:background="@color/green"
+            android:text="@string/welcome_play_online"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/button_play_offline"
+            app:layout_constraintDimensionRatio="H,1:3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText_nickname" />
 
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/button_play_offline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:background="@color/red"
+            android:text="@string/welcome_play_offline"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="H,1:3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_play_online" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

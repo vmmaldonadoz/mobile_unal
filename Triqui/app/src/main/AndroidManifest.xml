@@ -10,7 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.SplashActivity">
+        <activity
+            android:name=".activities.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,8 +22,15 @@
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/OfflineTheme" />
-        <activity android:name=".activities.PreferencesActivity" />
-        <activity android:name=".activities.GameMenuActivity" />
+        <activity
+            android:name=".activities.PreferencesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.GameMenuActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.OnlineGamesActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

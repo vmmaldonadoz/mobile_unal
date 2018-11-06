@@ -47,11 +47,11 @@ class GameMenuActivity : AppCompatActivity() {
     }
 
     private fun saveNickname() {
-        preferences.edit().putString(PREFERENCE_NICKNAME_KEY, binding.editTextNickname.text.toString()).apply()
+        preferences.edit().putString(PREFERENCE_NICKNAME_KEY, binding.editTextNickname.text.toString().toUpperCase()).apply()
     }
 
     private fun startOnlineGameActivity() {
-        startActivity(Intent(this, MainActivity::class.java))
+        startActivity(Intent(this, OnlineGamesActivity::class.java))
     }
 
     private fun startOfflineGameActivity() {

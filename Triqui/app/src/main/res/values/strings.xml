@@ -32,5 +32,6 @@
     <string name="online_finished_game">Finished game</string>
     <string name="online_game_created_by">Game started by: %1$s</string>
     <string name="online_enter_game">Enter</string>
+    <string name="online_new_game">New game</string>
 
 </resources>

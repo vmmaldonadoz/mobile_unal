@@ -10,6 +10,11 @@ class NewGameController {
     private val reference = FirebaseDatabase.getInstance().getReference(GAMES_REFERENCE)
 
     fun createNewGame(game: RemoteGame) {
-        reference.push().setValue(game.toMap())
+        val gameId = if (game.gameId.isBlank()) {
+            reference.push().key
+        } else {
+            game.gameId
+        }
+        gameId?.let { reference.child(gameId).setValue(game.toMap()) }
     }
 }

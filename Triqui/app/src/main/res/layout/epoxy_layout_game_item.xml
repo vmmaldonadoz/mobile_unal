@@ -17,7 +17,9 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/game_height">
+        android:layout_height="@dimen/game_height"
+        android:background="?android:selectableItemBackground"
+        android:onClick="@{onClick}">
 
         <TextView
             android:id="@+id/textView_game_state"
@@ -46,30 +48,38 @@
             app:online_game_created_by="@{model.playerOne}"
             tools:text="@string/online_game_created_by" />
 
-        <android.support.constraint.Barrier
-            android:id="@+id/barrier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_medium"
-            app:barrierAllowsGoneWidgets="true"
-            app:barrierDirection="end"
-            app:constraint_referenced_ids="textView_game_created_by,textView_game_state" />
+        <!--<android.support.constraint.Barrier-->
+        <!--android:id="@+id/barrier"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="@dimen/spacing_medium"-->
+        <!--app:barrierAllowsGoneWidgets="true"-->
+        <!--app:barrierDirection="end"-->
+        <!--app:constraint_referenced_ids="textView_game_created_by,textView_game_state" />-->
 
-        <Button
-            android:id="@+id/button_see"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/spacing_large"
-            android:layout_marginStart="@dimen/spacing_large"
-            android:text="@string/online_enter_game"
-            android:textAllCaps="false"
-            android:textColor="@color/gray"
-            android:onClick="@{onClick}"
+        <!--<Button-->
+        <!--android:id="@+id/button_see"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="@dimen/spacing_large"-->
+        <!--android:layout_marginStart="@dimen/spacing_large"-->
+        <!--android:background="@color/green"-->
+        <!--android:text="@string/online_enter_game"-->
+        <!--android:textAllCaps="false"-->
+        <!--android:textColor="@color/white"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="1"-->
+        <!--app:layout_constraintStart_toEndOf="@id/barrier"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/spacing_micro"
+            android:background="@color/gray_pale"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintStart_toEndOf="@id/barrier"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 

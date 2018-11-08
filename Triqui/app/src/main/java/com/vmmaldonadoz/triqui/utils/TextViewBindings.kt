@@ -5,8 +5,8 @@ import android.widget.TextView
 import com.vmmaldonadoz.triqui.R
 
 @BindingAdapter("app:online_game_state")
-fun TextView.setGameState(gameInProgress: Boolean) {
-    val value = if (gameInProgress) R.string.online_game_in_progress else R.string.online_finished_game
+fun TextView.setGameState(finishedGame: Boolean) {
+    val value = if (finishedGame) R.string.online_finished_game else R.string.online_game_in_progress
     setText(value)
 }
 

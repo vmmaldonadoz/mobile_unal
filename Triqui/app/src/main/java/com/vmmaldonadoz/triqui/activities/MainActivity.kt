@@ -13,12 +13,18 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Button
 import com.vmmaldonadoz.triqui.R
 import com.vmmaldonadoz.triqui.constants.GAME_ID
+import com.vmmaldonadoz.triqui.constants.PREFERENCE_NICKNAME_KEY
 import com.vmmaldonadoz.triqui.databinding.ActivityMainBinding
 import com.vmmaldonadoz.triqui.model.TicTacToeGame
 import com.vmmaldonadoz.triqui.viewmodel.MainViewModel
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,6 +41,12 @@ class MainActivity : AppCompatActivity() {
 
     private var mediaPlayer: MediaPlayer? = null
 
+    private val preferences by lazy { PreferenceManager.getDefaultSharedPreferences(this) }
+
+    private val clickSubject = PublishSubject.create<Int>()
+
+    private val compositeDisposable = CompositeDisposable()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.root
@@ -47,25 +59,53 @@ class MainActivity : AppCompatActivity() {
 
         observeBoard()
         observeWinner()
+        observeTurn()
+    }
+
+    private fun observeTurn() {
+        viewModel.turn.observe(this, Observer {
+            val safeTurn = it ?: true
+            enableBoardButtons(safeTurn)
+        })
+    }
+
+    private fun enableBoardButtons(playerTurn: Boolean) {
+        boardButtons.forEach { button ->
+            button.isEnabled = button.text.isBlank() && playerTurn
+        }
     }
 
     private fun readExtras(intent: Intent) {
         val gameId = intent.getStringExtra(GAME_ID).orEmpty()
+        val playerName = preferences.getString(PREFERENCE_NICKNAME_KEY, "").orEmpty()
 
         viewModel.apply {
+            setGameId(gameId)
+            this.playerName = (playerName)
             setPlayingOnline(gameId.isNotBlank())
-            setGame(gameId)
+
         }
+        val onlineVisibility = if (viewModel.isPlayingOnline()) GONE else VISIBLE
+        binding.buttonRestart.visibility = onlineVisibility
+        binding.textViewOrientation.visibility = onlineVisibility
     }
 
     override fun onResume() {
         super.onResume()
         mediaPlayer = MediaPlayer.create(applicationContext, R.raw.pop)
+        compositeDisposable.add(
+                clickSubject
+                        .debounce(400, TimeUnit.MILLISECONDS)
+                        .subscribe {
+                            handleClick(it)
+                        }
+        )
     }
 
     override fun onPause() {
         super.onPause()
         mediaPlayer?.release()
+        compositeDisposable.clear()
     }
 
     private fun observeWinner() {
@@ -100,6 +140,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupViewModel() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        lifecycle.addObserver(viewModel)
     }
 
     private fun initResetListener() {
@@ -195,10 +236,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleClick(button: Button, index: Int) {
         if (button.isEnabled) {
-            playClickSound()
-            setHumanMovement(index)
-            setMachineMovement()
+            clickSubject.onNext(index)
         }
+    }
+
+    private fun handleClick(index: Int) {
+        playClickSound()
+        setHumanMovement(index)
+        setMachineMovement()
     }
 
     private fun playClickSound() {
@@ -212,20 +257,54 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setMachineMovement() {
-        viewModel.setMachineMovement()
+        if (!viewModel.isPlayingOnline()) {
+            viewModel.setMachineMovement()
+        }
     }
 
     private fun checkWinner(winner: Int) {
         when (winner) {
-            0 -> showInformation(resources.getString(R.string.its_your_turn))
+            0 -> showInformation(getPlayersTurn())
             1 -> showInformation(resources.getString(R.string.its_a_tie))
-            2 -> showInformation(getHumanWinsMessage())
-            else -> showInformation(resources.getString(R.string.machine_won))
+            2 -> showInformation(getPlayerOneWins())
+            else -> showInformation(getPlayerTwoWins())
         }
         if (winner > 0) {
             boardButtons.forEach { button ->
                 button.isEnabled = false
             }
+        }
+    }
+
+    private fun getPlayersTurn(): String {
+        return if (viewModel.isPlayingOnline()) {
+            if (viewModel.remoteGame.gameTurn.isBlank()) {
+                if (viewModel.remoteGame.playerOne.equals(viewModel.playerName, true)) {
+                    resources.getString(R.string.waiting_for_player)
+                } else {
+                    resources.getString(R.string.its_your_turn)
+                }
+            } else {
+                resources.getString(R.string.player_turn, viewModel.remoteGame.gameTurn)
+            }
+        } else {
+            resources.getString(R.string.its_your_turn)
+        }
+    }
+
+    private fun getPlayerTwoWins(): String {
+        return if (viewModel.isPlayingOnline()) {
+            resources.getString(R.string.player_wins, viewModel.remoteGame.playerTwo)
+        } else {
+            resources.getString(R.string.machine_won)
+        }
+    }
+
+    private fun getPlayerOneWins(): String {
+        return if (viewModel.isPlayingOnline()) {
+            resources.getString(R.string.player_wins, viewModel.remoteGame.playerOne)
+        } else {
+            getHumanWinsMessage()
         }
     }
 

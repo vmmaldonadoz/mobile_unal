@@ -59,8 +59,8 @@ class GameMenuActivity : AppCompatActivity() {
     }
 
     private fun bindSavedNickname() {
-
         val savedNickname = preferences.getString(PREFERENCE_NICKNAME_KEY, "").orEmpty()
         binding.editTextNickname.setText(savedNickname)
+        binding.editTextNickname.setSelection(savedNickname.length)
     }
 }

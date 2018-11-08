@@ -10,6 +10,6 @@ fun String.mapToCharArray(): CharArray {
     return if (this.isBlank()) {
         CharArray(9) { ' ' }
     } else {
-        this.toCharArray()
+        this.replace(SEPARATOR, "").toCharArray()
     }
 }

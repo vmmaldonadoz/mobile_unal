@@ -1,5 +1,7 @@
 package com.vmmaldonadoz.triqui.model
 
+import android.util.Log
+import com.vmmaldonadoz.triqui.mappings.mapToCharArray
 import java.util.*
 
 class TicTacToeGame {
@@ -17,10 +19,6 @@ class TicTacToeGame {
 
     private fun initBoard() {
         board = CharArray(9) { ' ' }
-    }
-
-    fun loadSavedGame(savedGame : CharArray){
-        board = savedGame
     }
 
     fun setDifficulty(difficulty: DifficultyLevel) {
@@ -167,5 +165,11 @@ class TicTacToeGame {
 
     fun getBoard(): CharArray {
         return board
+    }
+
+    fun setRemoteGame(remoteGame: RemoteGame) {
+        board = remoteGame.savedGame.mapToCharArray()
+        Log.i("vmmz", board.toString())
+        Log.i("vmmz", remoteGame.savedGame)
     }
 }

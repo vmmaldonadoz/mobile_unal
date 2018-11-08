@@ -4,6 +4,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.vmmaldonadoz.triqui.constants.FINISHED
 import com.vmmaldonadoz.triqui.constants.GAMES_REFERENCE
 import com.vmmaldonadoz.triqui.mappings.toRemoteGame
 import com.vmmaldonadoz.triqui.model.RemoteGame
@@ -37,6 +38,7 @@ class GameListController {
     }
 
     fun connect() {
+        query.orderByChild(FINISHED).equalTo(false)
         query.removeEventListener(valueEventListener)
         query.addValueEventListener(valueEventListener)
     }

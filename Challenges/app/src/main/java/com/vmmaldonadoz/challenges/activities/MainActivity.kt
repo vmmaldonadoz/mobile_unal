@@ -19,9 +19,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val challenges by lazy {
-        listOf(Challenge("8", "Reto 8"),
-                Challenge("9", "Reto 9"),
-                Challenge("10", "Reto 10"))
+        listOf(Challenge("8", getString(R.string.challenge_8)),
+                Challenge("9", getString(R.string.challenge_9)),
+                Challenge("10", getString(R.string.challenge_10)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

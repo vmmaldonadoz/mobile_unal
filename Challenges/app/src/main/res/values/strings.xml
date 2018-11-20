@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Challenges</string>
+    <string name="create">Create</string>
+
+    <string name="challenge_8">Challenge 8: Sqlite</string>
+    <string name="challenge_9">Challenge 9: GPS</string>
+    <string name="challenge_10">Challenge 10: Web service</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="hint_company_name">Name</string>
+    <string name="hint_company_web_site">Website</string>
+    <string name="hint_company_email">Email</string>
+    <string name="hint_company_phone">Phone</string>
+    <string name="company_deleted">Company deleted!</string>
+    <string name="company_updated">Company updated!</string>
+    <string name="company_saved">Company saved!</string>
 </resources>

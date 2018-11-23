@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vmmaldonadoz.challenges">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -10,6 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <activity
             android:name=".activities.MainActivity"
             android:screenOrientation="portrait">
@@ -25,9 +33,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.CompanyActivity"
-            android:label="@string/challenge_8"
             android:configChanges="keyboardHidden"
+            android:label="@string/challenge_8"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.MapsActivity"
+            android:configChanges="keyboardHidden"
+            android:label="@string/challenge_9" />
     </application>
 
 </manifest>

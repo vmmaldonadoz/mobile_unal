@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     private fun handleClick(id: String) {
         val intent = when (id) {
             "8" -> Intent(this, SqliteChallengeActivity::class.java)
-            "9" -> Intent(this, SqliteChallengeActivity::class.java)
+            "9" -> Intent(this, MapsActivity::class.java)
             else -> Intent(this, SqliteChallengeActivity::class.java)
         }
         startActivity(intent)

@@ -19,12 +19,12 @@
 
         <TextView
             android:id="@+id/message"
-            style="@style/HeadlineText"
+            style="@style/BodyText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_large"
-            android:background="@drawable/box_with_border"
+            android:background="@color/colorPrimaryDark"
             android:gravity="center"
+            android:textColor="@color/white"
             android:padding="@dimen/spacing_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

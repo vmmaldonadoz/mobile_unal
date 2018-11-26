@@ -2,12 +2,14 @@ package com.vmmaldonadoz.challenges.activities
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
 import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -26,9 +28,11 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.vmmaldonadoz.challenges.R
 import com.vmmaldonadoz.challenges.databinding.ActivityMapsBinding
+import kotlinx.android.synthetic.main.activity_maps.*
 import java.util.concurrent.TimeUnit
 
 class MapsActivity : AppCompatActivity(),
@@ -37,6 +41,8 @@ class MapsActivity : AppCompatActivity(),
         OnMapReadyCallback {
 
     private val MY_PERMISSIONS_REQUEST_LOCATION: Int = 0x1
+
+    private val DEFAULT_ZOOM = 16f
 
     private lateinit var googleMap: GoogleMap
 
@@ -97,6 +103,8 @@ class MapsActivity : AppCompatActivity(),
         mapFragment.getMapAsync(this)
     }
 
+    private var userMarker: Marker? = null
+
     private fun setupLocation() {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
@@ -109,12 +117,12 @@ class MapsActivity : AppCompatActivity(),
                 googleMap.let { map ->
                     val latLng = LatLng(locationResult.lastLocation.latitude, locationResult.lastLocation.longitude)
                     mLastKnownLocation = latLng
-                    map.animateCamera(CameraUpdateFactory.newLatLng(latLng))
-                    map.addMarker(
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM))
+                    userMarker?.remove()
+                    userMarker = map.addMarker(
                             MarkerOptions()
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                                     .position(latLng)
-                                    .title("Usuario")
                     )
                 }
             }
@@ -152,7 +160,7 @@ class MapsActivity : AppCompatActivity(),
                     val place = placeLikelihood.place
                     mLikelyPlaceNames.add(place.name.toString())
                     mLikelyPlaceAddresses.add(place.address.toString())
-                    mLikelyPlaceAttributions.add(place.attributions.toString())
+                    mLikelyPlaceAttributions.add(place.attributions.orEmpty())
                     mLikelyPlaceLatLngs.add(place.latLng)
 
                     if (++counter == count) {
@@ -170,8 +178,24 @@ class MapsActivity : AppCompatActivity(),
     }
 
     private fun openPlacesDialog() {
+        val listener = DialogInterface.OnClickListener { _, which ->
+            val markerLatLng = mLikelyPlaceLatLngs[which]
+            val markerSnippet = "${mLikelyPlaceAddresses[which]}\n${mLikelyPlaceAttributions[which]}"
 
-///https://github.com/googlemaps/android-samples/blob/master/tutorials/CurrentPlaceDetailsOnMap/app/src/main/java/com/example/currentplacedetailsonmap/MapsActivityCurrentPlace.java
+            googleMap.addMarker(
+                    MarkerOptions()
+                            .title(mLikelyPlaceNames.get(which))
+                            .position(markerLatLng)
+                            .snippet(markerSnippet)
+            )
+
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng, DEFAULT_ZOOM))
+        }
+
+        AlertDialog.Builder(this)
+                .setTitle(R.string.pick_place)
+                .setItems(mLikelyPlaceNames.toTypedArray(), listener)
+                .show()
     }
 
     override fun onResume() {
@@ -236,5 +260,13 @@ class MapsActivity : AppCompatActivity(),
 
     override fun onMyLocationClick(location: Location) {
         Toast.makeText(this, "Current location:\n$location", Toast.LENGTH_LONG).show()
+    }
+}
+
+private fun CharSequence?.orEmpty(): String {
+    return if (isNullOrBlank()) {
+        ""
+    } else {
+        toString()
     }
 }

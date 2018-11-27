@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         val intent = when (id) {
             "8" -> Intent(this, SqliteChallengeActivity::class.java)
             "9" -> Intent(this, MapsActivity::class.java)
-            else -> Intent(this, SqliteChallengeActivity::class.java)
+            else -> Intent(this, WebserviceActivity::class.java)
         }
         startActivity(intent)
     }

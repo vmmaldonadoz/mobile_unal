@@ -39,7 +39,13 @@
         <activity
             android:name=".activities.MapsActivity"
             android:configChanges="keyboardHidden"
-            android:label="@string/challenge_9" />
+            android:label="@string/challenge_9"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.WebserviceActivity"
+            android:configChanges="keyboardHidden"
+            android:label="@string/challenge_10"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
